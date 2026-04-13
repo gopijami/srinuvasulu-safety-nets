@@ -92,7 +92,7 @@ type LocationContext = {
   conclusionLine: string;
 };
 
-const CITY_IMAGES = {
+export const CITY_IMAGES = {
   interiors: [
     {
       title: "Royal Balcony Safety",
