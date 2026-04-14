@@ -8,6 +8,7 @@ import {
   ArrowRight,
   CheckCircle2,
   ChevronRight,
+  CircleAlert,
   MapPin,
   Phone,
   ShieldCheck,
@@ -15,8 +16,16 @@ import {
   Star,
 } from "lucide-react";
 import type { buildServicePageData } from "@/app/lib/serviceContent";
+import type { UltraClientPageData } from "@/app/lib/ultra-page-adapter";
 
-type ServicePageData = NonNullable<ReturnType<typeof buildServicePageData>>;
+type ServicePageData = NonNullable<ReturnType<typeof buildServicePageData>> & {
+  seo?: UltraClientPageData["seo"];
+  localityIntelligence?: UltraClientPageData["localityIntelligence"];
+  audienceIntent?: UltraClientPageData["audienceIntent"];
+  uniquenessAssets?: UltraClientPageData["uniquenessAssets"];
+  schemaSupport?: UltraClientPageData["schemaSupport"];
+  extra?: UltraClientPageData["extra"];
+};
 
 export default function ClientServicePage({
   pageData,
@@ -48,6 +57,12 @@ export default function ClientServicePage({
     coverageHeading,
     coverageBody,
     breadcrumbLabel,
+    seo,
+    localityIntelligence,
+    audienceIntent,
+    uniquenessAssets,
+    schemaSupport,
+    extra,
   } = pageData;
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -237,6 +252,93 @@ export default function ClientServicePage({
         </div>
       </section>
 
+      {(localityIntelligence || audienceIntent) && (
+        <section className="relative">
+          <div className="mx-auto max-w-7xl px-6 py-6">
+            <div className="grid gap-8 lg:grid-cols-2">
+              {localityIntelligence && (
+                <div className="rounded-[2rem] border border-[#6f4c2c]/35 bg-[linear-gradient(180deg,rgba(30,21,17,0.82),rgba(11,9,9,0.9))] p-7 shadow-[0_30px_80px_rgba(0,0,0,0.36)] backdrop-blur-xl">
+                  <p className="text-xs uppercase tracking-[0.35em] text-orange-300">Local Intelligence</p>
+                  <h2 className="mt-3 text-3xl font-bold text-white">
+                    Why {location.name} needs a location-specific page
+                  </h2>
+                  <p className="mt-4 leading-7 text-slate-300">
+                    {localityIntelligence.areaProfile.areaCharacter}
+                  </p>
+                  <div className="mt-6 grid gap-4 md:grid-cols-2">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.3em] text-orange-300">Pain Points</p>
+                      <div className="mt-4 space-y-3">
+                        {localityIntelligence.areaProfile.localPainPoints.slice(0, 4).map((item: string) => (
+                          <div key={item} className="flex items-start gap-3">
+                            <CircleAlert className="mt-0.5 h-4 w-4 text-orange-400" />
+                            <p className="text-sm leading-6 text-slate-200">{item}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.3em] text-orange-300">Hyperlocal Signals</p>
+                      <div className="mt-4 space-y-3">
+                        {localityIntelligence.hyperlocalSignals.slice(0, 4).map((item: string) => (
+                          <div key={item} className="flex items-start gap-3">
+                            <MapPin className="mt-0.5 h-4 w-4 text-orange-400" />
+                            <p className="text-sm leading-6 text-slate-200">{item}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    {localityIntelligence.nearbyLandmarks.slice(0, 4).map((item: string) => (
+                      <span
+                        key={item}
+                        className="rounded-full border border-[#6b4b30]/35 bg-[rgba(44,31,23,0.7)] px-4 py-2 text-sm text-slate-200"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {audienceIntent && (
+                <div className="rounded-[2rem] border border-[#6f4c2c]/35 bg-[linear-gradient(180deg,rgba(30,21,17,0.82),rgba(11,9,9,0.9))] p-7 shadow-[0_30px_80px_rgba(0,0,0,0.36)] backdrop-blur-xl">
+                  <p className="text-xs uppercase tracking-[0.35em] text-orange-300">Buyer Intent</p>
+                  <h2 className="mt-3 text-3xl font-bold text-white">
+                    What buyers in {location.name} actually care about
+                  </h2>
+                  <div className="mt-6 space-y-6">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.3em] text-orange-300">Why They Buy</p>
+                      <div className="mt-4 space-y-3">
+                        {audienceIntent.whyTheyBuy.slice(0, 4).map((item: string) => (
+                          <div key={item} className="flex items-start gap-3">
+                            <Star className="mt-0.5 h-4 w-4 text-orange-400" />
+                            <p className="text-sm leading-6 text-slate-200">{item}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.3em] text-orange-300">Reassurance Points</p>
+                      <div className="mt-4 space-y-3">
+                        {audienceIntent.reassurancePoints.slice(0, 4).map((item: string) => (
+                          <div key={item} className="flex items-start gap-3">
+                            <CheckCircle2 className="mt-0.5 h-4 w-4 text-orange-400" />
+                            <p className="text-sm leading-6 text-slate-200">{item}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
       <section id="service-content" className="relative">
         <div className="mx-auto grid max-w-7xl gap-8 px-6 py-12 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-8">
@@ -362,6 +464,57 @@ export default function ClientServicePage({
         </div>
       </section>
 
+      {(uniquenessAssets?.testimonialAngles?.length || uniquenessAssets?.ctaBlocks?.length) && (
+        <section className="relative">
+          <div className="mx-auto max-w-7xl px-6 py-12">
+            <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+              {uniquenessAssets?.testimonialAngles?.length ? (
+                <div className="rounded-[2rem] border border-[#6e4a2b]/35 bg-[linear-gradient(180deg,rgba(42,28,20,0.74),rgba(13,10,10,0.88))] p-7 shadow-[0_30px_80px_rgba(0,0,0,0.3)] backdrop-blur-xl">
+                  <p className="text-xs uppercase tracking-[0.35em] text-orange-300">What Customers Say</p>
+                  <h2 className="mt-3 text-3xl font-bold text-white">
+                    Trust stories from {location.name}
+                  </h2>
+                  <div className="mt-6 grid gap-4">
+                    {uniquenessAssets.testimonialAngles.map((item) => (
+                      <div
+                        key={`${item.title}-${item.customerType}`}
+                        className="rounded-[1.5rem] border border-[#65472d]/35 bg-[rgba(24,17,14,0.74)] p-5"
+                      >
+                        <p className="text-xs uppercase tracking-[0.28em] text-orange-300">{item.customerType}</p>
+                        <h3 className="mt-3 text-lg font-semibold text-white">{item.title}</h3>
+                        <p className="mt-3 leading-7 text-slate-300">{item.quote}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+
+              {uniquenessAssets?.ctaBlocks?.length ? (
+                <div className="space-y-6">
+                  {uniquenessAssets.ctaBlocks.map((item) => (
+                    <div
+                      key={item.title}
+                      className="rounded-[2rem] border border-orange-400/20 bg-[linear-gradient(135deg,rgba(155,88,28,0.28),rgba(44,26,15,0.86),rgba(8,6,6,0.94))] p-7 shadow-[0_30px_80px_rgba(249,115,22,0.16)]"
+                    >
+                      <p className="text-xs uppercase tracking-[0.35em] text-orange-300">{item.actionLabel}</p>
+                      <h2 className="mt-4 text-2xl font-bold text-white">{item.title}</h2>
+                      <p className="mt-4 leading-7 text-slate-200">{item.description}</p>
+                      <a
+                        href="#contact-cta"
+                        className="mt-6 inline-flex items-center gap-3 rounded-full bg-orange-500 px-6 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-black transition hover:bg-orange-400"
+                      >
+                        {item.actionLabel}
+                        <ArrowRight className="h-4 w-4" />
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className="relative">
         <div className="mx-auto max-w-7xl px-6 py-12">
           <div className="grid gap-8 lg:grid-cols-2">
@@ -425,6 +578,60 @@ export default function ClientServicePage({
           </div>
         </div>
       </section>
+
+      {(seo || schemaSupport || extra?.quickHighlights?.length) && (
+        <section className="relative">
+          <div className="mx-auto max-w-7xl px-6 py-12">
+            <div className="grid gap-8 lg:grid-cols-3">
+              {extra?.quickHighlights?.length ? (
+                <div className="rounded-[2rem] border border-[#6e4a2b]/35 bg-[linear-gradient(180deg,rgba(42,28,20,0.74),rgba(13,10,10,0.88))] p-7 shadow-[0_30px_80px_rgba(0,0,0,0.3)] backdrop-blur-xl">
+                  <p className="text-xs uppercase tracking-[0.35em] text-orange-300">Quick Highlights</p>
+                  <div className="mt-5 flex flex-wrap gap-3">
+                    {extra.quickHighlights.map((item: string) => (
+                      <span
+                        key={item}
+                        className="rounded-full border border-[#6b4b30]/35 bg-[rgba(44,31,23,0.7)] px-4 py-2 text-sm text-slate-200"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+
+              {schemaSupport ? (
+                <div className="rounded-[2rem] border border-[#6e4a2b]/35 bg-[linear-gradient(180deg,rgba(42,28,20,0.74),rgba(13,10,10,0.88))] p-7 shadow-[0_30px_80px_rgba(0,0,0,0.3)] backdrop-blur-xl">
+                  <p className="text-xs uppercase tracking-[0.35em] text-orange-300">Offer Highlights</p>
+                  <div className="mt-5 space-y-3">
+                    {schemaSupport.offerHighlights.map((item: string) => (
+                      <div key={item} className="flex items-start gap-3">
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 text-orange-400" />
+                        <p className="text-sm leading-6 text-slate-200">{item}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+
+              {seo?.secondaryKeywords?.length ? (
+                <div className="rounded-[2rem] border border-[#6e4a2b]/35 bg-[linear-gradient(180deg,rgba(42,28,20,0.74),rgba(13,10,10,0.88))] p-7 shadow-[0_30px_80px_rgba(0,0,0,0.3)] backdrop-blur-xl">
+                  <p className="text-xs uppercase tracking-[0.35em] text-orange-300">Search Relevance</p>
+                  <div className="mt-5 flex flex-wrap gap-3">
+                    {seo.secondaryKeywords.slice(0, 6).map((item: string) => (
+                      <span
+                        key={item}
+                        className="rounded-full border border-[#6b4b30]/35 bg-[rgba(44,31,23,0.7)] px-4 py-2 text-sm text-slate-200"
+                      >
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </section>
+      )}
     </main>
   );
 }

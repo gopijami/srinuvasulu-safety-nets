@@ -30,7 +30,24 @@ export type CTAItem = {
 
 export type ExtraServiceUIData = {
   gallery?: string[];
+  galleryMeta?: {
+    title: string;
+    description: string;
+    alt: string;
+  }[];
   searchTerms?: string[];
+  nearbyAreas?: {
+    slug: string;
+    name: string;
+  }[];
+  similarServices?: {
+    slug: string;
+    name: string;
+    shortName: string;
+    badge: string;
+    category: string;
+    heroDescription: string;
+  }[];
   media?: {
     heroImage?: string;
     ogImage?: string;

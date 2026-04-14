@@ -2,14 +2,25 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ClientServicePage from "./ClientServicePage";
 import { buildServicePageData } from "@/app/lib/serviceContent";
+import { buildUltraServicePageData } from "@/app/lib/ultra-page-adapter";
+import type { UltraClientPageData } from "@/app/lib/ultra-page-adapter";
 
 type ServiceLocationPageProps = PageProps<"/hyderabad/[service]/[location]">;
+type DefaultPageData = NonNullable<ReturnType<typeof buildServicePageData>>;
+type RoutePageData = DefaultPageData | UltraClientPageData;
+
+function hasSeoData(
+  pageData: RoutePageData,
+): pageData is UltraClientPageData {
+  return "seo" in pageData && pageData.seo !== undefined;
+}
 
 export async function generateMetadata(
   props: ServiceLocationPageProps,
 ): Promise<Metadata> {
   const { service, location } = await props.params;
-  const pageData = buildServicePageData(service, location);
+  const pageData: RoutePageData | null =
+    buildUltraServicePageData(service, location) ?? buildServicePageData(service, location);
 
   if (!pageData) {
     return {
@@ -18,14 +29,20 @@ export async function generateMetadata(
   }
 
   return {
-    title: `${pageData.service.name} in ${pageData.location.name}, Hyderabad`,
-    description: `${pageData.service.name} in ${pageData.location.name} with dynamic service details, FAQs, nearby locations, similar products, and premium trust-building design.`,
+    title: hasSeoData(pageData)
+      ? (pageData.seo?.title ?? `${pageData.service.name} in ${pageData.location.name}, Hyderabad`)
+      : `${pageData.service.name} in ${pageData.location.name}, Hyderabad`,
+    description: hasSeoData(pageData)
+      ? (pageData.seo?.metaDescription ??
+        `${pageData.service.name} in ${pageData.location.name} with dynamic service details, FAQs, nearby locations, similar products, and premium trust-building design.`)
+      : `${pageData.service.name} in ${pageData.location.name} with dynamic service details, FAQs, nearby locations, similar products, and premium trust-building design.`,
   };
 }
 
 export default async function Page(props: ServiceLocationPageProps) {
   const { service, location } = await props.params;
-  const pageData = buildServicePageData(service, location);
+  const pageData: RoutePageData | null =
+    buildUltraServicePageData(service, location) ?? buildServicePageData(service, location);
 
   if (!pageData) {
     notFound();
