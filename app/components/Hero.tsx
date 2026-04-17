@@ -5,7 +5,7 @@ import { CheckCircle2, Sparkles } from 'lucide-react';
 
 const SLIDES = [
   {
-    image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80',
+    image:"/anti-bird-net/anti-bird-net.webp", //'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80',
     alt: 'Balcony safety nets installation for apartments',
     label: 'Balcony Safety Nets',
     title: 'Secure Your Home with',
@@ -23,7 +23,7 @@ const SLIDES = [
         icon: 'sparkles',
       },
     ],
-    accentImage: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80',
+    accentImage: "/anti-bird-net/card/anti-bird-net.webp", // 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1400&q=80',
     accentLabel: 'Safety Solution',
     accentHeadline: 'Premium Balcony Protection',
     accentDescription: 'Elegant, invisible-style safety nets that blend with your home while ensuring maximum security.',
@@ -162,7 +162,7 @@ const Hero = () => {
   const slide = SLIDES[activeIndex];
 
   return (
-    <section className="relative -mt-20 md:-mt-0 min-h-screen overflow-hidden bg-[#050505] text-white">
+    <section className="relative  md:-mt-0 min-h-screen overflow-hidden bg-[#050505] text-white">
       <div className="absolute inset-0">
         <img
           src={slide.image}
