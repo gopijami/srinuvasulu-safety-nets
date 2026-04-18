@@ -119,7 +119,7 @@ export default function ClientServicePage({
 
           <div className="relative mx-auto grid min-h-[100svh] max-w-7xl items-center px-5 py-10 sm:px-6 sm:py-14 md:min-h-screen lg:grid-cols-[1.02fr_0.98fr] lg:gap-14">
             <div className="py-8 sm:px-2 lg:py-1">
-                <span className="inline-flex rounded-full border border-orange-300/25 bg-black/25 px-4 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.34em] text-orange-200 backdrop-blur-md">
+                <span className="inline-flex rounded-full border border-orange-300/25 bg-black/25 px-4 py-3 text-[0.60rem] font-semibold uppercase tracking-[0.34em] text-orange-200 backdrop-blur-md">
                   {service.badge}
                 </span>
 

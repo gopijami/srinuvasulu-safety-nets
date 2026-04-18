@@ -2,7 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LOCATIONS, getServiceBySlug } from "@/app/lib/serviceContent";
 
-type ServicePageProps = PageProps<"/hyderabad/[service]">;
+type ServicePageProps = {
+  params: Promise<{
+    service: string;
+  }>;
+};
 
 export default async function ServicePage(props: ServicePageProps) {
   const { service } = await props.params;

@@ -5,7 +5,12 @@ import { buildServicePageData } from "@/app/lib/serviceContent";
 import { buildUltraServicePageData } from "@/app/lib/ultra-page-adapter";
 import type { UltraClientPageData } from "@/app/lib/ultra-page-adapter";
 
-type ServiceLocationPageProps = PageProps<"/hyderabad/[service]/[location]">;
+type ServiceLocationPageProps = {
+  params: Promise<{
+    service: string;
+    location: string;
+  }>;
+};
 type DefaultPageData = NonNullable<ReturnType<typeof buildServicePageData>>;
 type RoutePageData = DefaultPageData | UltraClientPageData;
 
